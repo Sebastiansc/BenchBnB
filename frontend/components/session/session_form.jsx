@@ -17,14 +17,13 @@ class SessionForm extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
     const user = this.state;
-    debugger;
-    this.props.processForm({user});
+    this.props.processForm(user);
   }
 
   displayErrors(){
     return (
       <ul>
-        {this.props.errors.map(error => <li>{error}</li>)}
+        {this.props.errors.map((error,i) => <li key={i}>{error}</li>)}
       </ul>
     );
   }
@@ -34,17 +33,17 @@ class SessionForm extends React.Component {
   }
 
   oppositePath(){
-    if(window.location.pathname === "/#/signup"){
+    if(window.location.hash === "#/signup"){
       return "/#/login";
     } else { return "/#/signup"; }
   }
 
+
   render(){
     return (
       <div>
-        {this.displayErrors()}
         <h1>{this.props.formType}</h1>
-
+        {this.displayErrors()}
         <label htmlFor="username">Username</label>
         <input type="text"
             id="username"
@@ -57,7 +56,9 @@ class SessionForm extends React.Component {
           onChange={ e => this.update(e, "password") }>
         </input>
         <button onClick={ e => this.handleSubmit(e) }>Submit</button>
-        <Link to={this.oppositePath()}></Link>
+        <Link to={this.oppositePath()}>
+          {this.oppositePath() === '#/signup' ? "Log In" : "Sign Up"}
+        </Link>
       </div>
     );
   }
