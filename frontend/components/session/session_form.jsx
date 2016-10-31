@@ -10,8 +10,8 @@ class SessionForm extends React.Component {
     };
   }
 
-  componentWillMount(){
-    if (this.props.loggedIn) this.props.router.replace("/#/");
+  componentDidUpdate(){
+    if (this.props.loggedIn) this.props.router.push("/");
   }
 
   handleSubmit(e) {
@@ -34,8 +34,16 @@ class SessionForm extends React.Component {
 
   oppositePath(){
     if(window.location.hash === "#/signup"){
-      return "/#/login";
-    } else { return "/#/signup"; }
+      return "#/login";
+    } else { return "#/signup"; }
+  }
+
+  navLink(){
+    return (
+      <Link to={this.oppositePath()}>
+        {this.oppositePath() === '#/signup' ? "Log In" : "Sign Up"}
+      </Link>
+    );
   }
 
 
@@ -44,21 +52,27 @@ class SessionForm extends React.Component {
       <div>
         <h1>{this.props.formType}</h1>
         {this.displayErrors()}
-        <label htmlFor="username">Username</label>
-        <input type="text"
+
+        <form onSubmit={ e => this.handleSubmit(e)}>
+          <label htmlFor="username">Username</label>
+          <input
+            type="text"
+            value={this.state.username}
             id="username"
             onChange={e => this.update(e, "username")}>
-        </input>
+          </input>
 
-        <label htmlFor="password">Password</label>
-        <input type="password"
-          id="password"
-          onChange={ e => this.update(e, "password") }>
-        </input>
-        <button onClick={ e => this.handleSubmit(e) }>Submit</button>
-        <Link to={this.oppositePath()}>
-          {this.oppositePath() === '#/signup' ? "Log In" : "Sign Up"}
-        </Link>
+          <label htmlFor="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            onChange={ e => this.update(e, "password") }>
+          </input>
+
+          <button>Submit</button>
+        </form>
+
+        {this.navLink()}
       </div>
     );
   }

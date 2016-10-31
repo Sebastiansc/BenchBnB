@@ -8,18 +8,20 @@ document.addEventListener("DOMContentLoaded", () => {
   window.login = login;
   window.logout = logout;
   window.signup = signup;
-  const store = configureStore();
 
   let store;
   if (window.currentUser ) {
-    store = configureStore({
-      username: window.currentUser.username,
-      id: window.currentUser.id
-    });
+    store = configureStore({session : {
+      currentUser: {
+        username: window.currentUser.username,
+        id: window.currentUser.id
+      },
+      errors: [],
+    }});
   } else {
     store = configureStore();
   }
-  
+
   window.store = store;
   const root = document.getElementById("root");
   ReactDOM.render(<Root store={store}/>, root);
